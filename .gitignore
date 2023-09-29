@@ -1,0 +1,13 @@
+# editors
+.idea/
+.vscode/
+*.code-workspace
+
+# terraform
+**/.terraform/*
+*.tfstate**
+main_*.tf
+.terraform-version
+
+# Meld
+*.orig
