@@ -7,7 +7,7 @@ resource "aws_security_group" "airflow_fargate_alb" {
   for_each    = { for key, value in var.airflow_components : key => value if key == "webserver" }
   name        = "airflow-${each.key}-alb-sg"
   description = "Allow TLS inbound traffic"
-  vpc_id      = local.vpc_id
+  vpc_id      = var.vpc_id
   ingress {
     from_port   = 80
     to_port     = 80
