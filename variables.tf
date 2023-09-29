@@ -42,12 +42,11 @@ variable "force_new_ecs_service_deployment" {
 
 # Configuration for different Airflow components.
 variable "airflow_components" {
-  description = "Configuration settings for various Airflow components. Includes command, healthcheck, desired count, and route53 settings for each component."
+  description = "Configuration settings for various Airflow components. Includes command, healthcheck, and desired count for each component."
   type = map(object({
     command       = optional(list(string))
     healthcheck   = optional(list(string))
     desired_count = optional(number)
-    route53       = optional(string)
   }))
 }
 

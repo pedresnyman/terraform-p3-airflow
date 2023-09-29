@@ -1,7 +1,7 @@
 # A subnet group for our RDS instance.
 resource "aws_db_subnet_group" "airflow_metadata_db" {
   name       = "${var.rds_identifier}-subg"
-  subnet_ids = var.private_subnets
+  subnet_ids = var.subnets
 }
 
 locals {

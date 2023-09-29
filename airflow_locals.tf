@@ -1,6 +1,4 @@
 locals {
-  vpc_id          = var.vpc_id
-  private_subnets = var.private_subnets
   #   container definitions
   container_definitions = { for key, value in var.airflow_components :
     key => {

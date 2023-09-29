@@ -36,7 +36,7 @@ resource "aws_security_group" "airflow_fargate_service" {
   for_each    = { for key, value in var.airflow_components : key => value }
   name        = "airflow-${each.key}-service-sg"
   description = "Allow HTTP inbound traffic from load balancer"
-  vpc_id      = local.vpc_id
+  vpc_id      = var.vpc_id
   dynamic "ingress" {
     for_each = each.key == "webserver" ? [each.value] : []
     content {
