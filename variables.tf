@@ -12,28 +12,16 @@ variable "airflow_cloudwatch_retention" {
   default     = 7
 }
 
-# The Amazon Resource Name (ARN) of the ACM certificate for domain validation.
-variable "acm_certificate_arn" {
-  description = "The ARN of the ACM certificate used for domain validation."
-  type        = string
-}
-
 # The unique identifier of the Virtual Private Cloud (VPC) where resources will be deployed.
 variable "vpc_id" {
   description = "The ID of the Virtual Private Cloud (VPC) where resources are deployed."
   type        = string
 }
 
-# Specifies the subnets within the VPC that are designated as private. Typically, these subnets don't have direct access to the internet.
-variable "private_subnets" {
-  description = "Subnet IDs within the VPC that are designated as private (typically don't have direct access to the internet)."
+# Specifies the subnets within the VPC.
+variable "subnets" {
+  description = "Subnet IDs within the VPC."
   type        = list(string)
-}
-
-# The unique identifier for the Route53 hosted zone where DNS records will be managed.
-variable "route53_zone_id" {
-  description = "The ID of the Route53 hosted zone for managing DNS records."
-  type        = string
 }
 
 # ECS variables
