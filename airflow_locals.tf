@@ -1,5 +1,5 @@
 locals {
-  #   container definitions
+  # container definitions
   container_definitions = { for key, value in var.airflow_components :
     key => {
       name  = key
@@ -52,7 +52,7 @@ locals {
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__SUBNETS"
-      value = join(",", local.private_subnets)
+      value = join(",", var.subnets)
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
