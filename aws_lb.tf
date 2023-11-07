@@ -1,10 +1,6 @@
 # application load balancer
 # this allows us to have high availability
 resource "aws_lb" "airflow_fargate" {
-  #checkov:skip=CKV_AWS_131
-  #checkov:skip=CKV_AWS_91
-  #checkov:skip=CKV_AWS_150
-  #checkov:skip=CKV2_AWS_20
   for_each           = { for key, value in var.airflow_components : key => value if key == "webserver" }
   name               = "airflow-${each.key}"
   internal           = true
@@ -36,8 +32,6 @@ resource "aws_lb_target_group" "airflow_fargate" {
 # application load balancer listener
 # the listener routes traffic from the load balancer's dns name to the load balancer target group
 resource "aws_lb_listener" "airflow_fargate" {
-  #checkov:skip=CKV_AWS_2
-  #checkov:skip=CKV_AWS_103
   for_each          = { for key, value in var.airflow_components : key => value if key == "webserver" }
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 80

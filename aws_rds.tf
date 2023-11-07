@@ -13,7 +13,6 @@ locals {
 # A security group to attach to our RDS instance.
 # It should allow incoming access on var.metadata_db.port from our airflow services.
 resource "aws_security_group" "airflow_metadata_db" {
-  #checkov:skip=CKV_AWS_23
   name        = "${var.rds_identifier}-secg"
   description = "Allow inbound traffic to RDS from ECS"
   vpc_id      = var.vpc_id
@@ -35,15 +34,6 @@ resource "aws_security_group" "airflow_metadata_db" {
 # A postgres RDS instance for airflow metadata.
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance
 resource "aws_db_instance" "airflow_metadata_db" {
-  #checkov:skip=CKV_AWS_161: "Ensure RDS database has IAM authentication enabled"
-  #checkov:skip=CKV_AWS_353: "Ensure that RDS instances have performance insights enabled"
-  #checkov:skip=CKV_AWS_157: "Ensure that RDS instances have Multi-AZ enabled"
-  #checkov:skip=CKV_AWS_129: "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled"
-  #checkov:skip=CKV_AWS_17: "Ensure all data stored in RDS is not publicly accessible"
-  #checkov:skip=CKV_AWS_118: "Ensure that enhanced monitoring is enabled for Amazon RDS instances"
-  #checkov:skip=CKV2_AWS_60: "Ensure RDS instance with copy tags to snapshots is enabled"
-  #checkov:skip=CKV2_AWS_30: "Ensure Postgres RDS as aws_db_instance has Query Logging enabled"
-  #checkov:skip=CKV_AWS_354: "Ensure RDS Performance Insights are encrypted using KMS CMKs"
   identifier                 = var.rds_identifier
   allocated_storage          = var.rds_allocated_storage
   max_allocated_storage      = var.rds_max_allocated_storage

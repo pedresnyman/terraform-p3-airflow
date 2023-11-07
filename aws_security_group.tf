@@ -1,9 +1,6 @@
 # security group for application load balancer
 # allow incoming traffic from port 80
 resource "aws_security_group" "airflow_fargate_alb" {
-  #checkov:skip=CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
-  #checkov:skip=CKV2_AWS_5
-  #checkov:skip=CKV_AWS_23
   for_each    = { for key, value in var.airflow_components : key => value if key == "webserver" }
   name        = "airflow-${each.key}-alb-sg"
   description = "Allow TLS inbound traffic"
@@ -31,8 +28,6 @@ resource "aws_security_group" "airflow_fargate_alb" {
 
 ## security group for ecs service
 resource "aws_security_group" "airflow_fargate_service" {
-  #checkov:skip=CKV_AWS_23
-  #checkov:skip=CKV2_AWS_5
   for_each    = { for key, value in var.airflow_components : key => value }
   name        = "airflow-${each.key}-service-sg"
   description = "Allow HTTP inbound traffic from load balancer"

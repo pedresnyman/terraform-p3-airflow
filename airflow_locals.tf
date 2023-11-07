@@ -22,7 +22,7 @@ locals {
       environment = concat(local.airflow_environment_variables, [
         {
           name  = "LOG_GROUP",
-          value = "/airflow-fargate/${key}/"
+          value = "/${var.cloudwatch_log_prefix}/${key}/"
         },
         {
           name  = "AIRFLOW__ECS_FARGATE__SECURITY_GROUPS"
@@ -35,7 +35,7 @@ locals {
         options = {
           awslogs-group         = aws_cloudwatch_log_group.airflow_fargate[key].name
           awslogs-region        = var.aws_region
-          awslogs-stream-prefix = "airflow-fargate"
+          awslogs-stream-prefix = var.cloudwatch_log_prefix
         }
       }
     }
@@ -59,10 +59,6 @@ locals {
       value = "postgresql+psycopg2://${jsondecode(data.aws_secretsmanager_secret_version.airflow_metadata_db_secret_version.secret_string)["username"]}:${jsondecode(data.aws_secretsmanager_secret_version.airflow_metadata_db_secret_version.secret_string)["password"]}@${aws_db_instance.airflow_metadata_db.endpoint}/airflow"
     },
     {
-      name  = "AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE"
-      value = "False"
-    },
-    {
       name  = "AIRFLOW__CORE__EXECUTOR"
       value = "aws_executors_plugin.AwsEcsFargateExecutor"
     },
@@ -76,7 +72,7 @@ locals {
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__CLUSTER"
-      value = "airflow"
+      value = var.ecs_cluster_name
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__CONTAINER_NAME"
@@ -84,7 +80,7 @@ locals {
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__TASK_DEFINITION"
-      value = "airflow-task-executor"
+      value = aws_ecs_task_definition.airflow_fargate["task-executor"].id
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__LAUNCH_TYPE"
@@ -105,14 +101,6 @@ locals {
     {
       name  = "AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID"
       value = "aws_default"
-    },
-    {
-      name  = "AIRFLOW__SECRETS__BACKEND"
-      value = "airflow.providers.amazon.aws.secrets.secrets_manager.SecretsManagerBackend"
-    },
-    {
-      name  = "AIRFLOW__SECRETS__BACKEND_KWARGS"
-      value = "{\"connections_prefix\": \"airflow/connections\", \"variables_prefix\": \"airflow/variables\", \"config_prefix\": \"airflow/config\"}"
     },
   ]
   # Combine static and dynamic variables

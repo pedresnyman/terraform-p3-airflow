@@ -1,6 +1,6 @@
 # ECS cluster for our Airflow deployment
 resource "aws_ecs_cluster" "airflow" {
-  name = "airflow"
+  name = var.ecs_cluster_name
   setting {
     name  = "containerInsights"
     value = "enabled"

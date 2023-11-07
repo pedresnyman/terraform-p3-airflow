@@ -1,6 +1,5 @@
 # ecs task definiion
 resource "aws_ecs_task_definition" "airflow_fargate" {
-  #checkov:skip=CKV_AWS_249
   for_each           = var.airflow_components
   family             = "airflow-${each.key}"
   cpu                = var.cpu

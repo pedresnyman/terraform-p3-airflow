@@ -12,6 +12,13 @@ variable "airflow_cloudwatch_retention" {
   default     = 7
 }
 
+# Cloudwatch log group prefix
+variable "cloudwatch_log_prefix" {
+  description = "The CloudWatch logs prefix."
+  type        = string
+  default     = "airflow-fargate"
+}
+
 # The unique identifier of the Virtual Private Cloud (VPC) where resources will be deployed.
 variable "vpc_id" {
   description = "The ID of the Virtual Private Cloud (VPC) where resources are deployed."
@@ -24,7 +31,21 @@ variable "subnets" {
   type        = list(string)
 }
 
+# ECR repository name
+variable "ecr_repository_name" {
+  description = "The ECR repository name for the Docker image."
+  type        = string
+  default     = "airflow-fargate"
+}
+
 # ECS variables
+
+# ECS cluster name
+variable "ecs_cluster_name" {
+  description = "The ECR repository name for the Docker image."
+  type        = string
+  default     = "airflow"
+}
 
 # Determines if all the ECS services and tasks should run on SPOT instances
 variable "use_spot" {
@@ -77,7 +98,7 @@ variable "capacity_providers" {
 variable "airflow_ecs_role" {
   description = "IAM role assumed by ECS when executing Airflow tasks."
   type        = string
-  default     = "role-ecs-task-execution-2"
+  default     = "role-ecs-task-execution"
 }
 
 # CPU units to assign to the ECS task.
