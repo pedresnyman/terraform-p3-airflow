@@ -43,7 +43,7 @@ resource "aws_db_instance" "airflow_metadata_db" {
   instance_class             = var.rds_instance_class
   kms_key_id                 = aws_kms_key.airflow_kms.arn
   storage_encrypted          = true
-  deletion_protection        = true
+  deletion_protection        = var.rds_deletion_protection
   publicly_accessible        = var.rds_publicly_accessible
   auto_minor_version_upgrade = var.rds_auto_minor_version_upgrade
   vpc_security_group_ids     = [aws_security_group.airflow_metadata_db.id]

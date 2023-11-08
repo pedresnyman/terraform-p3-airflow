@@ -192,3 +192,10 @@ variable "rds_auto_minor_version_upgrade" {
   type        = bool
   default     = true
 }
+
+# Determines if the RDS has deletion protected enabled.
+variable "rds_deletion_protection" {
+  description = "Enables or disables deletion protection on the RDS instance."
+  type        = bool
+  default     = true
+}
