@@ -31,13 +31,57 @@ resource "aws_lb_target_group" "airflow_fargate" {
 
 # application load balancer listener
 # the listener routes traffic from the load balancer's dns name to the load balancer target group
-resource "aws_lb_listener" "airflow_fargate" {
-  for_each          = { for key, value in var.airflow_components : key => value if key == "webserver" }
+resource "aws_lb_listener" "airflow_fargate_http_default" {
+  for_each = length(var.route53_domain_name) == 0 || length(var.route53_dns_name) == 0
+             ? { for key, value in var.airflow_components : key => value if key == "webserver" }
+             : {}
+
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 80
   protocol          = "HTTP"
+
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.airflow_fargate[each.key].arn
   }
 }
+
+####
+
+resource "aws_lb_listener" "airflow_fargate_http" {
+  for_each = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+             ? { for key, value in var.airflow_components : key => value if key == "webserver" }
+             : {}
+
+  load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "airflow_fargate_https" {
+  for_each = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+             ? { for key, value in var.airflow_components : key => value if key == "webserver" }
+             : {}
+
+  load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  certificate_arn   = module.acm.acm_certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.airflow_fargate[each.key].arn
+  }
+}
+
