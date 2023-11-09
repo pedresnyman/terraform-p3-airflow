@@ -1,6 +1,9 @@
 locals {
-  create_route53_resources = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+  create_http_listener = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+  create_https_listener = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+  create_plain_http_listener = length(var.route53_domain_name) == 0 || length(var.route53_dns_name) == 0
 }
+
 
 
 # application load balancer
@@ -36,9 +39,8 @@ resource "aws_lb_target_group" "airflow_fargate" {
 
 # application load balancer listener
 # the listener routes traffic from the load balancer's dns name to the load balancer target group
-resource "aws_lb_listener" "airflow_fargate_http_default" {
-  # This will become an empty map if create_route53_resources is true, thus not creating any resources.
-  for_each = local.create_route53_resources ? {} : { for key, value in var.airflow_components : key => value if key == "webserver" }
+resource "aws_lb_listener" "airflow_fargate_plain_http" {
+  for_each = local.create_plain_http_listener ? { for key, value in var.airflow_components : key => value if key == "webserver" } : {}
 
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 80
@@ -51,14 +53,13 @@ resource "aws_lb_listener" "airflow_fargate_http_default" {
 }
 
 
+
 ####
 
 resource "aws_lb_listener" "airflow_fargate_http" {
-  for_each = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
-             ? { for key, value in var.airflow_components : key => value if key == "webserver" }
-             : {}
+  for_each = local.create_http_listener ? { for key, value in var.airflow_components : key => value if key == "webserver" } : {}
 
-  load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
+  load_balancer_arn = aws_lb.airflow_fargate[each.key].id
   port              = 80
   protocol          = "HTTP"
 
@@ -73,10 +74,9 @@ resource "aws_lb_listener" "airflow_fargate_http" {
   }
 }
 
+
 resource "aws_lb_listener" "airflow_fargate_https" {
-  for_each = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
-             ? { for key, value in var.airflow_components : key => value if key == "webserver" }
-             : {}
+  for_each = local.create_https_listener ? { for key, value in var.airflow_components : key => value if key == "webserver" } : {}
 
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 443
@@ -89,4 +89,5 @@ resource "aws_lb_listener" "airflow_fargate_https" {
     target_group_arn = aws_lb_target_group.airflow_fargate[each.key].arn
   }
 }
+
 
