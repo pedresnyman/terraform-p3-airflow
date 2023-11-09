@@ -12,7 +12,7 @@ resource "aws_iam_policy" "ecs_task_execution_policy" {
         "ecr:BatchCheckLayerAvailability",
         "ecr:BatchGetImage",
         "ecr:GetAuthorizationToken",
-        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetDownloadUrlForLayer"
       ],
       "Resource": "*"
     },
