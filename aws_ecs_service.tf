@@ -1,4 +1,4 @@
-# create ecs sercvices
+# create ecs services
 # webserver, scheduler, triggerer
 resource "aws_ecs_service" "airflow_fargate" {
   for_each        = { for key, value in var.airflow_components : key => value if lookup(value, "desired_count", null) != null }
