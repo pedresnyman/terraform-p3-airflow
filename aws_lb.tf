@@ -1,3 +1,8 @@
+locals {
+  create_route53_resources = length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+}
+
+
 # application load balancer
 # this allows us to have high availability
 resource "aws_lb" "airflow_fargate" {
@@ -32,9 +37,8 @@ resource "aws_lb_target_group" "airflow_fargate" {
 # application load balancer listener
 # the listener routes traffic from the load balancer's dns name to the load balancer target group
 resource "aws_lb_listener" "airflow_fargate_http_default" {
-  for_each = length(var.route53_domain_name) == 0 || length(var.route53_dns_name) == 0
-             ? { for key, value in var.airflow_components : key => value if key == "webserver" }
-             : {}
+  # This will become an empty map if create_route53_resources is true, thus not creating any resources.
+  for_each = local.create_route53_resources ? {} : { for key, value in var.airflow_components : key => value if key == "webserver" }
 
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 80
@@ -45,6 +49,7 @@ resource "aws_lb_listener" "airflow_fargate_http_default" {
     target_group_arn = aws_lb_target_group.airflow_fargate[each.key].arn
   }
 }
+
 
 ####
 
