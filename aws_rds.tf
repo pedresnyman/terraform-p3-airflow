@@ -49,7 +49,7 @@ resource "aws_db_instance" "airflow_metadata_db" {
   vpc_security_group_ids     = [aws_security_group.airflow_metadata_db.id]
   apply_immediately          = true
   skip_final_snapshot        = true
-  username                   = jsondecode(data.aws_secretsmanager_secret_version.airflow_metadata_db_secret_version.secret_string)["username"]
-  password                   = jsondecode(data.aws_secretsmanager_secret_version.airflow_metadata_db_secret_version.secret_string)["password"]
+  username                   = var.airflow_username
+  password                   = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
   port                       = 5432
 }

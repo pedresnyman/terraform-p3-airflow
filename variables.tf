@@ -1,3 +1,17 @@
+# The Airflow username
+variable "airflow_username" {
+  description = "The Airflow username"
+  type        = string
+  default     = "airflow"
+}
+
+# The Airflow username password
+variable "airflow_username_password" {
+  description = "The Airflow username password"
+  type        = string
+  default     = null
+}
+
 # Specifies the AWS region where resources will be created.
 variable "aws_region" {
   description = "The AWS region where infrastructure components will be provisioned."
@@ -39,7 +53,6 @@ variable "ecr_repository_name" {
 }
 
 # ECS variables
-
 # ECS cluster name
 variable "ecs_cluster_name" {
   description = "The ECR repository name for the Docker image."

@@ -9,6 +9,6 @@ output "airflow_fargate_ecr_repository" {
 }
 
 output "password" {
-  description = "The ECR repository ARN for Airflow"
-  value       = random_password.password
+  description = "The password for the Airflow user"
+  value       = random_password.password.result
 }

@@ -81,7 +81,7 @@ resource "aws_lb_listener" "airflow_fargate_https" {
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   // Use [0] to access the first (and only) instance of the module
-  certificate_arn   = module.acm[0].acm_certificate_arn
+  certificate_arn = module.acm[0].acm_certificate_arn
 
   default_action {
     type             = "forward"
