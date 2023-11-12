@@ -246,3 +246,17 @@ variable "route53_dns_name" {
   type        = string
   default     = null
 }
+
+
+# Docker
+# Docker context path.
+variable "docker_context_path" {
+  description = "The path of the docker context for Airflow"
+  type        = string
+}
+
+# Dockerfile path.
+variable "dockerfile_path" {
+  description = "The path of the Dockerfile for Airflow"
+  type        = string
+}
