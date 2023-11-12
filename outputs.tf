@@ -7,3 +7,8 @@ output "airflow_fargate_ecr_repository" {
   description = "The ECR repository ARN for Airflow"
   value       = aws_ecr_repository.airflow.arn
 }
+
+output "password" {
+  description = "The ECR repository ARN for Airflow"
+  value       = random_password.password
+}
