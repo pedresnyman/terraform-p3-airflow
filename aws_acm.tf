@@ -1,5 +1,5 @@
 module "acm" {
-  count      = can(length(var.route53_domain_name)) && length(var.route53_domain_name) > 0 ? 1 : 0
+  count      = try(length(var.route53_domain_name), 0) > 0 ? 1 : 0
   source     = "terraform-aws-modules/acm/aws"
   version    = "3.5.0"
 
