@@ -1,7 +1,7 @@
 locals {
-  create_http_listener       = length(coalesce(var.route53_domain_name, "")) > 0 && length(coalesce(var.route53_dns_name, "")) > 0
-  create_https_listener      = length(coalesce(var.route53_domain_name, "")) > 0 && length(coalesce(var.route53_dns_name, "")) > 0
-  create_plain_http_listener = length(coalesce(var.route53_domain_name, "")) == 0 || length(coalesce(var.route53_dns_name, "")) == 0
+  create_http_listener       = var.route53_domain_name != null && var.route53_dns_name != null && length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+  create_https_listener      = var.route53_domain_name != null && var.route53_dns_name != null && length(var.route53_domain_name) > 0 && length(var.route53_dns_name) > 0
+  create_plain_http_listener = var.route53_domain_name == null || var.route53_dns_name == null || length(var.route53_domain_name) == 0 || length(var.route53_dns_name) == 0
 }
 
 # application load balancer
