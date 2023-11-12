@@ -1,6 +1,6 @@
 locals {
-  vpc_id          = var.vpc_id != null && length(var.vpc_id) > 0 ? var.vpc_id : module.vpc[0].vpc_id
-  private_subnets = var.vpc_id != null && length(var.vpc_id) > 0 ? var.subnets : module.vpc[0].private_subnets
+  vpc_id = try(length(var.vpc_id) > 0, false) ? var.vpc_id : module.vpc[0].vpc_id
+  private_subnets = try(length(var.vpc_id) > 0, false) ? var.subnets : module.vpc[0].private_subnets
   airflow_components = {
     webserver = {
       command       = ["airflow", "webserver"]
