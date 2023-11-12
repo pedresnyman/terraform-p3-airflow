@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "airflow_zone" {
-  count = var.route53_domain_name != null && length(var.route53_domain_name) > 0 ? 1 : 0
+  count = can(length(var.route53_domain_name)) && length(var.route53_domain_name) > 0 ? 1 : 0
   name  = var.route53_domain_name
 }
 
