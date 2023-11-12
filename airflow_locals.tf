@@ -218,14 +218,6 @@ locals {
       name  = "AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID"
       value = "aws_default"
     },
-    {
-      name  = "AIRFLOW__SECRETS__BACKEND"
-      value = "airflow.providers.amazon.aws.secrets.secrets_manager.SecretsManagerBackend"
-    },
-    {
-      name  = "AIRFLOW__SECRETS__BACKEND_KWARGS"
-      value = "{\"connections_prefix\": \"airflow/connections\", \"variables_prefix\": \"airflow/variables\", \"config_prefix\": \"airflow/config\"}"
-    },
   ]
   # Combine static and dynamic variables
   airflow_environment_variables = concat(local.airflow_environment_static_variables, var.airflow_environment_variables)
