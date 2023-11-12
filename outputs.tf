@@ -9,6 +9,5 @@ output "airflow_fargate_ecr_repository" {
 }
 
 output "password" {
-  description = "The password for the Airflow user"
-  value       = random_password.password.result
+  value = length(random_password.password) > 0 ? random_password.password[0].result : "Not generated"
 }
