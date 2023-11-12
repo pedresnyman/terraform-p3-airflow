@@ -79,12 +79,12 @@ resource "aws_lb_listener" "airflow_fargate_https" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn   = module.acm.acm_certificate_arn
+
+  // Use [0] to access the first (and only) instance of the module
+  certificate_arn   = module.acm[0].acm_certificate_arn
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.airflow_fargate[each.key].arn
   }
 }
-
-
