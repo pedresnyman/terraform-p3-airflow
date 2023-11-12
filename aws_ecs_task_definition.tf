@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "airflow_fargate" {
   family             = "airflow-${each.key}"
   cpu                = var.cpu
   memory             = var.memory
-  execution_role_arn = "arn:aws:iam::${data.aws_caller_identity.this_account.account_id}:role/${var.airflow_ecs_role}"
-  task_role_arn      = "arn:aws:iam::${data.aws_caller_identity.this_account.account_id}:role/${var.airflow_ecs_role}"
+  execution_role_arn = "arn:aws:iam::${data.aws_caller_identity.this_account.account_id}:role/${local.ecs_role_name}"
+  task_role_arn      = "arn:aws:iam::${data.aws_caller_identity.this_account.account_id}:role/${local.ecs_role_name}"
   network_mode       = "awsvpc"
   runtime_platform {
     operating_system_family = "LINUX"
@@ -14,3 +14,4 @@ resource "aws_ecs_task_definition" "airflow_fargate" {
   requires_compatibilities = ["FARGATE"]
   container_definitions    = jsonencode([local.container_definitions[each.key]])
 }
+

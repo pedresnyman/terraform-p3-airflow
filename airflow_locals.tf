@@ -1,6 +1,7 @@
 locals {
   vpc_id = try(length(var.vpc_id) > 0, false) ? var.vpc_id : module.vpc[0].vpc_id
   private_subnets = try(length(var.vpc_id) > 0, false) ? var.subnets : module.vpc[0].private_subnets
+  ecs_role_name = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
   airflow_components = {
     webserver = {
       command       = ["airflow", "webserver"]

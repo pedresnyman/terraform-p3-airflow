@@ -131,7 +131,7 @@ variable "capacity_providers" {
 variable "airflow_ecs_role" {
   description = "IAM role assumed by ECS when executing Airflow tasks."
   type        = string
-  default     = "role-ecs-task-execution"
+  default     = null
 }
 
 # CPU units to assign to the ECS task.
