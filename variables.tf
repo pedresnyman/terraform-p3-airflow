@@ -214,13 +214,15 @@ variable "rds_deletion_protection" {
 
 # route53
 # Route53 domain name.
-#variable "route53_domain_name" {
-#  description = "The domain name for Route 53"
-#  type        = string
-#}
-#
-## Route53 record name.
-#variable "route53_dns_name" {
-#  description = "The dns record for Airflow"
-#  type        = string
-#}
+variable "route53_domain_name" {
+  description = "The domain name for Route 53"
+  type        = string
+  default     = null
+}
+
+# Route53 record name.
+variable "route53_dns_name" {
+  description = "The dns record for Airflow"
+  type        = string
+  default     = null
+}
