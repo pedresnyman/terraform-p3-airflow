@@ -1,7 +1,7 @@
 # create ecs services
 # webserver, scheduler, triggerer
 resource "aws_ecs_service" "airflow_fargate" {
-  for_each        = { for key, value in var.airflow_components : key => value if lookup(value, "desired_count", null) != null }
+  for_each        = { for key, value in local.airflow_components : key => value if lookup(value, "desired_count", null) != null }
   name            = "airflow-${each.key}"
   task_definition = aws_ecs_task_definition.airflow_fargate[each.key].family
   cluster         = aws_ecs_cluster.airflow.arn

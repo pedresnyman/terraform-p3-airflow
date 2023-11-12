@@ -1,6 +1,6 @@
 # ecs task definiion
 resource "aws_ecs_task_definition" "airflow_fargate" {
-  for_each           = var.airflow_components
+  for_each           = local.airflow_components
   family             = "airflow-${each.key}"
   cpu                = var.cpu
   memory             = var.memory
