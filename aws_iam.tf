@@ -57,12 +57,12 @@ EOF
 resource "aws_iam_role" "role_ecs_task_execution" {
   count                = var.airflow_ecs_role == null ? 1 : 0
   name                 = "role-ecs-task-execution"
-  assume_role_policy   = data.aws_iam_policy_document.role_ecs_task_execution_assume_policy.json
+  assume_role_policy   = var.airflow_ecs_role == null ? data.aws_iam_policy_document.role_ecs_task_execution_assume_policy[0].json : ""
   max_session_duration = 3600
 }
 
 data "aws_iam_policy_document" "role_ecs_task_execution_assume_policy" {
-  count = var.airflow_ecs_role == null ? 1 : 0
+  count       = var.airflow_ecs_role == null ? 1 : 0
   statement {
     principals {
       type        = "Service"
