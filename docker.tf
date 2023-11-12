@@ -5,3 +5,9 @@ resource "docker_image" "airflow_image" {
     dockerfile = var.dockerfile_path
   }
 }
+
+resource "null_resource" "ecr_login" {
+  provisioner "local-exec" {
+    command = "aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.airflow.repository_url}"
+  }
+}
