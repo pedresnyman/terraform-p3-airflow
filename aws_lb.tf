@@ -9,7 +9,7 @@ locals {
 # application load balancer
 # this allows us to have high availability
 resource "aws_lb" "airflow_fargate" {
-  for_each           = { for key, value in var.airflow_components : key => value if key == "webserver" }
+  for_each           = { for key, value in local.airflow_components : key => value if key == "webserver" }
   name               = "airflow-${each.key}"
   internal           = true
   load_balancer_type = "application"
@@ -21,7 +21,7 @@ resource "aws_lb" "airflow_fargate" {
 # application load balancer tagret group
 # this is where the network traffic is being routed to (the ecs container)
 resource "aws_lb_target_group" "airflow_fargate" {
-  for_each    = { for key, value in var.airflow_components : key => value if key == "webserver" }
+  for_each    = { for key, value in local.airflow_components : key => value if key == "webserver" }
   name        = "airflow-${each.key}"
   port        = 8080
   protocol    = "HTTP"
@@ -36,11 +36,10 @@ resource "aws_lb_target_group" "airflow_fargate" {
   }
 }
 
-
 # application load balancer listener
 # the listener routes traffic from the load balancer's dns name to the load balancer target group
 resource "aws_lb_listener" "airflow_fargate_plain_http" {
-  for_each = local.create_plain_http_listener ? { for key, value in var.airflow_components : key => value if key == "webserver" } : {}
+  for_each = local.create_plain_http_listener ? { for key, value in local.airflow_components : key => value if key == "webserver" } : {}
 
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 80
@@ -54,10 +53,10 @@ resource "aws_lb_listener" "airflow_fargate_plain_http" {
 
 
 
-####
+#### Route53 with ACM
 
 #resource "aws_lb_listener" "airflow_fargate_http" {
-#  for_each = local.create_http_listener ? { for key, value in var.airflow_components : key => value if key == "webserver" } : {}
+#  for_each = local.create_http_listener ? { for key, value in local.airflow_components : key => value if key == "webserver" } : {}
 #
 #  load_balancer_arn = aws_lb.airflow_fargate[each.key].id
 #  port              = 80
@@ -76,7 +75,7 @@ resource "aws_lb_listener" "airflow_fargate_plain_http" {
 #
 #
 #resource "aws_lb_listener" "airflow_fargate_https" {
-#  for_each = local.create_https_listener ? { for key, value in var.airflow_components : key => value if key == "webserver" } : {}
+#  for_each = local.create_https_listener ? { for key, value in local.airflow_components : key => value if key == "webserver" } : {}
 #
 #  load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
 #  port              = 443
