@@ -4,7 +4,7 @@ resource "aws_security_group" "airflow_fargate_alb" {
   for_each    = { for key, value in local.airflow_components : key => value if key == "webserver" }
   name        = "airflow-${each.key}-alb-sg"
   description = "Allow TLS inbound traffic"
-  vpc_id     = local.vpc_id
+  vpc_id      = local.vpc_id
   ingress {
     from_port   = 80
     to_port     = 80
@@ -31,7 +31,7 @@ resource "aws_security_group" "airflow_fargate_service" {
   for_each    = { for key, value in local.airflow_components : key => value }
   name        = "airflow-${each.key}-service-sg"
   description = "Allow HTTP inbound traffic from load balancer"
-  vpc_id     = local.vpc_id
+  vpc_id      = local.vpc_id
   dynamic "ingress" {
     for_each = each.key == "webserver" ? [each.value] : []
     content {

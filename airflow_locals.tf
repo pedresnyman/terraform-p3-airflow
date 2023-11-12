@@ -1,5 +1,5 @@
 locals {
-  vpc_id     = var.vpc_id != null && length(var.vpc_id) > 0 ? var.vpc_id : module.vpc[0].vpc_id
+  vpc_id          = var.vpc_id != null && length(var.vpc_id) > 0 ? var.vpc_id : module.vpc[0].vpc_id
   private_subnets = var.vpc_id != null && length(var.vpc_id) > 0 ? var.subnets : module.vpc[0].private_subnets
   airflow_components = {
     webserver = {
@@ -21,7 +21,7 @@ locals {
     task-executor = {
     }
   }
-  db_password     = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
+  db_password = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
   #   container definitions
   container_definitions = { for key, value in local.airflow_components :
     key => {

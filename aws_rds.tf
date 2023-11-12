@@ -15,7 +15,7 @@ locals {
 resource "aws_security_group" "airflow_metadata_db" {
   name        = "${var.rds_identifier}-secg"
   description = "Allow inbound traffic to RDS from ECS"
-  vpc_id     = local.vpc_id
+  vpc_id      = local.vpc_id
   ingress {
     from_port       = 5432
     to_port         = 5432

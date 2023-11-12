@@ -2,7 +2,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.2"
 
-  count = var.vpc_id == null || length(var.vpc_id) == 0 ? 1 : 0
+  count = try(length(var.vpc_id), 0) == 0 ? 1 : 0
 
   name = "airflow-vpc"
   cidr = "10.0.0.0/16"
@@ -15,6 +15,6 @@ module "vpc" {
   single_nat_gateway = true
 
   tags = {
-    Terraform   = "true"
+    Terraform = "true"
   }
 }

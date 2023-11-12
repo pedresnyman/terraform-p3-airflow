@@ -24,7 +24,7 @@ resource "aws_lb_target_group" "airflow_fargate" {
   port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id     = local.vpc_id
+  vpc_id      = local.vpc_id
   health_check {
     enabled             = true
     path                = "/health"
