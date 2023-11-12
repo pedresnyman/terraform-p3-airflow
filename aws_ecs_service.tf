@@ -16,7 +16,7 @@ resource "aws_ecs_service" "airflow_fargate" {
   }
   enable_execute_command = var.enable_execute_command
   network_configuration {
-    subnets          = var.subnets
+    subnets          = local.private_subnets
     assign_public_ip = false
     security_groups  = [aws_security_group.airflow_fargate_service[each.key].id]
   }

@@ -37,12 +37,14 @@ variable "cloudwatch_log_prefix" {
 variable "vpc_id" {
   description = "The ID of the Virtual Private Cloud (VPC) where resources are deployed."
   type        = string
+  default = null
 }
 
 # Specifies the subnets within the VPC.
 variable "subnets" {
   description = "Subnet IDs within the VPC."
   type        = list(string)
+  default = null
 }
 
 # ECR repository name

@@ -12,7 +12,7 @@ resource "aws_lb" "airflow_fargate" {
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.airflow_fargate_alb[each.key].id]
-  subnets            = var.subnets
+  subnets            = local.private_subnets
   ip_address_type    = "ipv4"
 }
 
@@ -24,7 +24,7 @@ resource "aws_lb_target_group" "airflow_fargate" {
   port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = var.vpc_id
+  vpc_id     = local.vpc_id
   health_check {
     enabled             = true
     path                = "/health"
