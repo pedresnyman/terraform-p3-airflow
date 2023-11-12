@@ -130,7 +130,7 @@ variable "memory" {
 variable "autoscale_cpu_avg_usage" {
   description = "CPU usage percentage that triggers ECS task autoscaling."
   type        = number
-  default = 70
+  default     = 70
 }
 
 # Minimum number of ECS tasks to maintain when scaling in.
