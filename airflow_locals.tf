@@ -19,7 +19,7 @@ locals {
     task-executor = {
     }
   }
-  db_password = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
+  db_password     = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
   vpc_id          = var.vpc_id
   private_subnets = var.subnets
   #   container definitions

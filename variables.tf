@@ -52,6 +52,13 @@ variable "ecr_repository_name" {
   default     = "airflow-fargate"
 }
 
+# ECR force delete repository
+variable "ecr_force_delete" {
+  description = "Determines whether to force delete the ECR repository, including all of its images, when the repository is destroyed. Setting this to true will delete all images in the repository and the repository itself. Use with caution as this is irreversible."
+  type        = bool
+  default     = true
+}
+
 # ECS variables
 # ECS cluster name
 variable "ecs_cluster_name" {
