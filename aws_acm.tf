@@ -16,3 +16,11 @@
 #    Name = var.route53_domain_name
 #  }
 #}
+
+
+
+locals {
+  webserver_count = var.webserver_count
+  scheduler_count = var.scheduler_count
+  triggerer_count = var.triggerer_count
+}

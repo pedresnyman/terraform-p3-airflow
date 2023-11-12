@@ -61,14 +61,25 @@ variable "force_new_ecs_service_deployment" {
   default     = true
 }
 
-# Configuration for different Airflow components.
-variable "airflow_components" {
-  description = "Configuration settings for various Airflow components. Includes command, healthcheck, and desired count for each component."
-  type = map(object({
-    command       = optional(list(string))
-    healthcheck   = optional(list(string))
-    desired_count = optional(number)
-  }))
+# The amount of Airflow webservers 
+variable "webserver_count" {
+  description = "The number of webservers you want to configure"
+  type        = number
+  default     = 1
+}
+
+# The amount of Airflow schedulers 
+variable "scheduler_count" {
+  description = "The number of schedulers you want to configure"
+  type        = number
+  default     = 1
+}
+
+# The amount of Airflow triggerer
+variable "triggerer_count" {
+  description = "The number of triggerers you want to configure"
+  type        = number
+  default     = 1
 }
 
 # Allows for executing commands within the ECS container via AWS SSM.
