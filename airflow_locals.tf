@@ -19,9 +19,7 @@ locals {
     task-executor = {
     }
   }
-}
-
-locals {
+  db_password = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
   vpc_id          = var.vpc_id
   private_subnets = var.subnets
   #   container definitions
@@ -81,7 +79,7 @@ locals {
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
-      value = "postgresql+psycopg2://${jsondecode(data.aws_secretsmanager_secret_version.airflow_metadata_db_secret_version.secret_string)["username"]}:${jsondecode(data.aws_secretsmanager_secret_version.airflow_metadata_db_secret_version.secret_string)["password"]}@${aws_db_instance.airflow_metadata_db.endpoint}/airflow"
+      value = "postgresql+psycopg2://${var.airflow_username}:${local.db_password}@${aws_db_instance.airflow_metadata_db.endpoint}/airflow"
     },
     {
       name  = "AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE"
