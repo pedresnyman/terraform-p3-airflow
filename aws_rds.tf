@@ -34,7 +34,7 @@ resource "aws_security_group" "airflow_metadata_db" {
 # A postgres RDS instance for airflow metadata.
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance
 resource "aws_db_instance" "airflow_metadata_db" {
-  db_name                    = "airflow"
+  db_name                    = var.rds_database_name
   identifier                 = var.rds_identifier
   allocated_storage          = var.rds_allocated_storage
   max_allocated_storage      = var.rds_max_allocated_storage

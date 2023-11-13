@@ -170,6 +170,12 @@ variable "max_capacity" {
 }
 
 # RDS variables
+# The name of the RDS database that will be used for Airflow
+variable "rds_database_name" {
+  description = "Database name for Airflow"
+  type        = string
+  default     = "airflow"
+}
 
 # The unique identifier for the RDS instance. This identifier is used to distinguish different RDS instances.
 variable "rds_identifier" {

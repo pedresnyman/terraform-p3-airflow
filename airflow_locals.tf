@@ -80,7 +80,7 @@ locals {
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
-      value = "postgresql+psycopg2://${var.airflow_username}:${local.db_password}@${aws_db_instance.airflow_metadata_db.endpoint}/airflow"
+      value = "postgresql+psycopg2://${var.airflow_username}:${local.db_password}@${aws_db_instance.airflow_metadata_db.endpoint}/${var.rds_database_name}"
     },
     {
       name  = "AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE"
