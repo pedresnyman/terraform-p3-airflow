@@ -9,7 +9,7 @@ output "airflow_fargate_ecr_repository" {
 }
 
 output "public_subnet_ids" {
-  value = module.vpc.public_subnets
+  value = length(module.vpc) > 0 ? module.vpc[0].public_subnets : []
 }
 
 output "password" {
