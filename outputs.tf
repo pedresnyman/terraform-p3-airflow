@@ -16,5 +16,8 @@ output "password" {
   value = length(random_password.password) > 0 ? random_password.password[0].result : "Not generated"
 }
 
+output "container_definitions_json" {
+  value = jsonencode([for key in keys(local.airflow_components) : local.container_definitions[key]])
+}
 
 
