@@ -8,6 +8,10 @@ output "airflow_fargate_ecr_repository" {
   value       = aws_ecr_repository.airflow.arn
 }
 
+output "public_subnet_ids" {
+  value = module.vpc.public_subnets
+}
+
 output "password" {
   value = length(random_password.password) > 0 ? random_password.password[0].result : "Not generated"
 }
