@@ -248,3 +248,11 @@ variable "route53_dns_name" {
   type        = string
   default     = null
 }
+
+# secretsmanager
+# Route53 record name.
+variable "secrets_manager_recovery_window_in_days" {
+  description = "Amount of days to keep the secret after deletion"
+  type        = number
+  default     = 0 # force delete
+}

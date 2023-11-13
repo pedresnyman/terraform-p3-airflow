@@ -8,6 +8,7 @@ resource "random_password" "password" {
 resource "aws_secretsmanager_secret" "airflow_metadata_db_secret" {
   name        = "variables/airflow_meta_db"
   description = "Credentials for the Airflow metadata RDS instance"
+  recovery_window_in_days = var.secrets_manager_recovery_window_in_days
 }
 
 resource "aws_secretsmanager_secret_version" "airflow_metadata_db_secret_version" {
