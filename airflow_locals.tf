@@ -43,7 +43,7 @@ locals {
       linuxParameters = {
         initProcessEnabled = var.enable_execute_command
       }
-      environment = concat(var.airflow_environment_variables, [
+      environment = concat(local.airflow_environment_variables, [
         {
           name  = "LOG_GROUP",
           value = "/airflow-fargate/${key}/"
