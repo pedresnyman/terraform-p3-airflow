@@ -62,7 +62,7 @@ resource "aws_iam_role" "role_ecs_task_execution" {
 }
 
 data "aws_iam_policy_document" "role_ecs_task_execution_assume_policy" {
-  count       = var.airflow_ecs_role == null ? 1 : 0
+  count = var.airflow_ecs_role == null ? 1 : 0
   statement {
     principals {
       type        = "Service"
