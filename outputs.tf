@@ -12,6 +12,10 @@ output "public_subnet_ids" {
   value = length(module.vpc) > 0 ? module.vpc[0].public_subnets : []
 }
 
+output "private_subnet_ids" {
+  value = length(module.vpc) > 0 ? module.vpc[0].private_subnets : []
+}
+
 output "password" {
   value = length(random_password.password) > 0 ? random_password.password[0].result : "Not generated"
 }

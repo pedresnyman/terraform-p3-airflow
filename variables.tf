@@ -40,8 +40,22 @@ variable "vpc_id" {
   default     = null
 }
 
-# Specifies the subnets within the VPC.
-variable "subnets" {
+# Deploy on private subnet
+variable "deploy_on_private_subnet" {
+  description = "Determines whether to deploy Airflow on the private subnet"
+  type        = bool
+  default     = false
+}
+
+# Specifies the public subnets within the VPC.
+variable "public_subnets" {
+  description = "Subnet IDs within the VPC."
+  type        = list(string)
+  default     = null
+}
+
+# Specifies the private subnets within the VPC.
+variable "private_subnets" {
   description = "Subnet IDs within the VPC."
   type        = list(string)
   default     = null

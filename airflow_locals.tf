@@ -1,6 +1,9 @@
 locals {
   vpc_id          = try(length(var.vpc_id) > 0, false) ? var.vpc_id : module.vpc[0].vpc_id
-  private_subnets = try(length(var.vpc_id) > 0, false) ? var.subnets : module.vpc[0].private_subnets
+  private_subnets = try(length(var.vpc_id) > 0, false) ? var.private_subnets : module.vpc[0].private_subnets
+  public_subnets = try(length(var.vpc_id) > 0, false) ? var.public_subnets : module.vpc[0].public_subnets
+  # Choose between private or public subnets based on the deploy_on_private_subnet variable
+  subnets = var.deploy_on_private_subnet ? local.private_subnets : local.public_subnets
   ecs_role_name   = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
   airflow_components = {
     webserver = {
@@ -76,7 +79,7 @@ locals {
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__SUBNETS"
-      value = join(",", local.private_subnets)
+      value = join(",", local.subnets)
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
