@@ -3,7 +3,7 @@ resource "random_password" "password" {
   length = 16
   special = true
   // Exclude characters that are not allowed in MasterUserPassword
-  override_special = "/@ "
+  override_special = "/@\" "
 }
 
 resource "aws_secretsmanager_secret" "airflow_metadata_db_secret" {
