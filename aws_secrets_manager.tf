@@ -1,8 +1,9 @@
 resource "random_password" "password" {
-  count            = var.airflow_username_password != null ? 0 : 1
-  length           = 16
-  special          = true
-  override_special = "_%@"
+  count  = var.airflow_username_password != null ? 0 : 1
+  length = 16
+  special = true
+  // Exclude characters that are not allowed in MasterUserPassword
+  override_special = "/@ "
 }
 
 resource "aws_secretsmanager_secret" "airflow_metadata_db_secret" {
