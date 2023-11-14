@@ -47,6 +47,13 @@ variable "deploy_loadbalancer_on_public_subnet" {
   default     = true
 }
 
+# Deploy on private subnet
+variable "deploy_on_public_subnet" {
+  description = "Determines whether to deploy the Airflow solution on the public subnet"
+  type        = bool
+  default     = false
+}
+
 # Specifies the public subnets within the VPC.
 variable "public_subnets" {
   description = "Subnet IDs within the VPC."
