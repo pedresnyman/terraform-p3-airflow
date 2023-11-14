@@ -41,10 +41,10 @@ variable "vpc_id" {
 }
 
 # Deploy on private subnet
-variable "deploy_on_private_subnet" {
-  description = "Determines whether to deploy Airflow on the private subnet"
+variable "deploy_loadbalancer_on_public_subnet" {
+  description = "Determines whether to deploy the load balancer Airflow on the public subnet"
   type        = bool
-  default     = false
+  default     = true
 }
 
 # Specifies the public subnets within the VPC.

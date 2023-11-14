@@ -12,7 +12,7 @@ resource "aws_lb" "airflow_fargate" {
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.airflow_fargate_alb[each.key].id]
-  subnets            = local.subnets
+  subnets            = var.deploy_loadbalancer_on_public_subnet != null ? local.private_subnets : local.public_subnets
   ip_address_type    = "ipv4"
 }
 
