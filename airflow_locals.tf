@@ -1,9 +1,12 @@
 locals {
+  # network
   vpc_id          = try(length(var.vpc_id) > 0, false) ? var.vpc_id : module.vpc[0].vpc_id
   private_subnets = try(length(var.private_subnets) > 0, false) ? var.private_subnets : module.vpc[0].private_subnets
   public_subnets  = try(length(var.public_subnets) > 0, false) ? var.public_subnets : module.vpc[0].public_subnets
   subnets         = var.deploy_on_public_subnet ? local.public_subnets : local.private_subnets
+  # aws role
   ecs_role_name   = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
+  # ecs tasks/services
   airflow_components = {
     webserver = {
       command       = ["airflow", "webserver"]
@@ -24,6 +27,7 @@ locals {
     task-executor = {
     }
   }
+  # rds database password
   db_password = var.airflow_username_password != null ? var.airflow_username_password : random_password.password[0].result
   #   container definitions
   container_definitions = { for key, value in local.airflow_components :
@@ -67,6 +71,7 @@ locals {
     }
   }
 
+  # airflow environmental variables
   airflow_environment_static_variables = [
     {
       name  = "AIRFLOW__ECS_FARGATE__REGION"
