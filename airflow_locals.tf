@@ -1,9 +1,7 @@
 locals {
   # network
-  vpc_id          = try(length(var.vpc_id) > 0, false) ? var.vpc_id : module.vpc[0].vpc_id
-  private_subnets = try(length(var.private_subnets) > 0, false) ? var.private_subnets : module.vpc[0].private_subnets
-  public_subnets  = try(length(var.public_subnets) > 0, false) ? var.public_subnets : module.vpc[0].public_subnets
-  subnets         = var.deploy_on_public_subnet ? local.public_subnets : local.private_subnets
+  vpc_id          = var.vpc_id
+  subnet_ids      = var.subnet_ids
   # aws role
   ecs_role_name   = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
   # ecs tasks/services
@@ -83,7 +81,7 @@ locals {
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__SUBNETS"
-      value = join(",", local.subnets)
+      value = join(",", local.subnet_ids)
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"

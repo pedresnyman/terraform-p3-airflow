@@ -1,9 +1,3 @@
-locals {
-  create_http_listener       = try(length(var.route53_domain_name), 0) > 0 && try(length(var.route53_dns_name), 0) > 0
-  create_https_listener      = try(length(var.route53_domain_name), 0) > 0 && try(length(var.route53_dns_name), 0) > 0
-  create_plain_http_listener = try(length(var.route53_domain_name), 0) == 0 || try(length(var.route53_dns_name), 0) == 0
-}
-
 # application load balancer
 # this allows us to have high availability
 resource "aws_lb" "airflow_fargate" {
@@ -12,7 +6,7 @@ resource "aws_lb" "airflow_fargate" {
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.airflow_fargate_alb[each.key].id]
-  subnets            = var.deploy_loadbalancer_on_public_subnet != null ? local.private_subnets : local.public_subnets
+  subnets            = local.subnet_ids
   ip_address_type    = "ipv4"
 }
 
@@ -37,51 +31,11 @@ resource "aws_lb_target_group" "airflow_fargate" {
 # application load balancer listener
 # the listener routes traffic from the load balancer's dns name to the load balancer target group
 resource "aws_lb_listener" "airflow_fargate_plain_http" {
-  for_each = local.create_plain_http_listener ? { for key, value in local.airflow_components : key => value if key == "webserver" } : {}
+  for_each = { for key, value in local.airflow_components : key => value if key == "webserver" }
 
   load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
   port              = 80
   protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.airflow_fargate[each.key].arn
-  }
-}
-
-
-
-#### Route53 with ACM
-
-resource "aws_lb_listener" "airflow_fargate_http" {
-  for_each = local.create_http_listener ? { for key, value in local.airflow_components : key => value if key == "webserver" } : {}
-
-  load_balancer_arn = aws_lb.airflow_fargate[each.key].id
-  port              = 80
-  protocol          = "HTTP"
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
-
-resource "aws_lb_listener" "airflow_fargate_https" {
-  for_each = local.create_https_listener ? { for key, value in local.airflow_components : key => value if key == "webserver" } : {}
-
-  load_balancer_arn = aws_lb.airflow_fargate[each.key].arn
-  port              = 443
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-
-  // Use [0] to access the first (and only) instance of the module
-  certificate_arn = module.acm[0].acm_certificate_arn
 
   default_action {
     type             = "forward"

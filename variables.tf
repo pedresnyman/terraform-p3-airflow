@@ -40,30 +40,9 @@ variable "vpc_id" {
   default     = null
 }
 
-# Deploy on private subnet
-variable "deploy_loadbalancer_on_public_subnet" {
-  description = "Determines whether to deploy the load balancer Airflow on the public subnet"
-  type        = bool
-  default     = true
-}
-
-# Deploy on private subnet
-variable "deploy_on_public_subnet" {
-  description = "Determines whether to deploy the Airflow solution on the public subnet"
-  type        = bool
-  default     = false
-}
-
-# Specifies the public subnets within the VPC.
-variable "public_subnets" {
-  description = "Subnet IDs within the VPC."
-  type        = list(string)
-  default     = null
-}
-
-# Specifies the private subnets within the VPC.
-variable "private_subnets" {
-  description = "Subnet IDs within the VPC."
+# Specifies the subnet id's Airflow would be deployed.
+variable "subnet_ids" {
+  description = "Subnet IDs to deploy Airflow."
   type        = list(string)
   default     = null
 }
@@ -261,23 +240,7 @@ variable "rds_deletion_protection" {
   default     = true
 }
 
-# route53
-# Route53 domain name.
-variable "route53_domain_name" {
-  description = "The domain name for Route 53"
-  type        = string
-  default     = null
-}
-
-# Route53 record name.
-variable "route53_dns_name" {
-  description = "The dns record for Airflow"
-  type        = string
-  default     = null
-}
-
 # secretsmanager
-# Route53 record name.
 variable "secrets_manager_recovery_window_in_days" {
   description = "Amount of days to keep the secret after deletion"
   type        = number
