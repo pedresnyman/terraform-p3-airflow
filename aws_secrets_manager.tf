@@ -1,6 +1,12 @@
 resource "random_password" "password" {
   count  = var.airflow_username_password != null ? 0 : 1
   length = 16
+
+  # Define allowed characters
+  override_special = "!#$%&*+-=?^_{}~"
+
+  # Ensure no problematic characters are included
+  special = true
 }
 
 resource "aws_secretsmanager_secret" "airflow_metadata_db_secret" {

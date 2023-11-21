@@ -37,14 +37,12 @@ variable "cloudwatch_log_prefix" {
 variable "vpc_id" {
   description = "The ID of the Virtual Private Cloud (VPC) where resources are deployed."
   type        = string
-  default     = null
 }
 
 # Specifies the subnet id's Airflow would be deployed.
 variable "subnet_ids" {
   description = "Subnet IDs to deploy Airflow."
   type        = list(string)
-  default     = null
 }
 
 # ECR repository name
