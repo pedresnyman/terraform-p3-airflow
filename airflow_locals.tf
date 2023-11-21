@@ -1,9 +1,9 @@
 locals {
   # network
-  vpc_id          = var.vpc_id
-  subnet_ids      = var.subnet_ids
+  vpc_id     = var.vpc_id
+  subnet_ids = var.subnet_ids
   # aws role
-  ecs_role_name   = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
+  ecs_role_name = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
   # ecs tasks/services
   airflow_components = {
     webserver = {
