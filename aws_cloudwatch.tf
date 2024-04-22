@@ -1,7 +1,7 @@
 ## cloudwatch groups for airflow
 resource "aws_cloudwatch_log_group" "airflow_logs" {
   name              = "/${var.cloudwatch_log_prefix}/dag_runs/"
-  retention_in_days = 731
+  retention_in_days = var.airflow_cloudwatch_retention
 }
 
 ## cloudwatch groups for all the ecs tasks

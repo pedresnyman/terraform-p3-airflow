@@ -7,22 +7,39 @@ locals {
   # ecs tasks/services
   airflow_components = {
     webserver = {
-      command       = ["airflow", "webserver"]
-      healthcheck   = ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-      desired_count = var.webserver_count
+      command                 = ["airflow", "webserver"]
+      healthcheck             = ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      cpu                     = var.webserver_cpu
+      memory                  = var.webserver_memory
+      desired_count           = var.webserver_count
+      autoscale_min_capacity  = var.webserver_autoscale_min_capacity
+      autoscale_max_capacity  = var.webserver_autoscale_max_capacity
+      autoscale_cpu_avg_usage = var.webserver_autoscale_cpu_avg_usage
     }
     scheduler = {
-      command       = ["airflow", "scheduler"]
-      healthcheck   = ["CMD-SHELL", "airflow jobs check --job-type SchedulerJob --hostname \"$${HOSTNAME}\""]
-      desired_count = var.scheduler_count
+      command                 = ["airflow", "scheduler"]
+      healthcheck             = ["CMD-SHELL", "airflow jobs check --job-type SchedulerJob --hostname \"$${HOSTNAME}\""]
+      cpu                     = var.scheduler_cpu
+      memory                  = var.scheduler_memory
+      desired_count           = var.scheduler_count
+      autoscale_min_capacity  = var.scheduler_autoscale_min_capacity
+      autoscale_max_capacity  = var.scheduler_autoscale_max_capacity
+      autoscale_cpu_avg_usage = var.scheduler_autoscale_cpu_avg_usage
     }
     triggerer = {
-      command       = ["airflow", "triggerer"]
-      healthcheck   = ["CMD-SHELL", "airflow jobs check --job-type TriggererJob --hostname \"$${HOSTNAME}\""]
-      desired_count = var.triggerer_count
+      command                 = ["airflow", "triggerer"]
+      healthcheck             = ["CMD-SHELL", "airflow jobs check --job-type TriggererJob --hostname \"$${HOSTNAME}\""]
+      cpu                     = var.triggerer_cpu
+      memory                  = var.triggerer_memory
+      desired_count           = var.triggerer_count
+      autoscale_min_capacity  = var.triggerer_autoscale_min_capacity
+      autoscale_max_capacity  = var.triggerer_autoscale_max_capacity
+      autoscale_cpu_avg_usage = var.triggerer_autoscale_cpu_avg_usage
     }
     # "worker"
     task-executor = {
+      cpu    = var.task_executor_cpu
+      memory = var.task_executor_memory
     }
   }
   # rds database password
@@ -87,10 +104,10 @@ locals {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
       value = "postgresql+psycopg2://${var.airflow_username}:${local.db_password}@${aws_db_instance.airflow_metadata_db.endpoint}/${var.rds_database_name}"
     },
-    {
-      name  = "AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE"
-      value = "False"
-    },
+    #     {
+    #       name  = "AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE"
+    #       value = "False"
+    #     },
     {
       name  = "AIRFLOW__CORE__EXECUTOR"
       value = "aws_executors_plugin.AwsEcsFargateExecutor"

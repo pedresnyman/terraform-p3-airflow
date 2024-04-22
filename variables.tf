@@ -81,27 +81,6 @@ variable "force_new_ecs_service_deployment" {
   default     = true
 }
 
-# The amount of Airflow webservers 
-variable "webserver_count" {
-  description = "The number of webservers you want to configure"
-  type        = number
-  default     = 1
-}
-
-# The amount of Airflow schedulers 
-variable "scheduler_count" {
-  description = "The number of schedulers you want to configure"
-  type        = number
-  default     = 1
-}
-
-# The amount of Airflow triggerer
-variable "triggerer_count" {
-  description = "The number of triggerers you want to configure"
-  type        = number
-  default     = 1
-}
-
 # Allows for executing commands within the ECS container via AWS SSM.
 variable "enable_execute_command" {
   description = "Allows executing commands in the ECS container via AWS SSM."
@@ -133,38 +112,143 @@ variable "airflow_ecs_role" {
 }
 
 # CPU units to assign to the ECS task.
-variable "cpu" {
-  description = "Number of CPU units to allocate for the ECS task."
+variable "task_executor_cpu" {
+  description = "Number of CPU units to allocate for the task-executor ECS task."
   type        = number
   default     = 1024
 }
 
 # Amount of memory to assign to the ECS task, measured in MiB.
-variable "memory" {
-  description = "Amount of memory (in MiB) to allocate for the ECS task."
+variable "task_executor_memory" {
+  description = "Amount of memory (in MiB) to allocate for the task-executor ECS task."
+  type        = number
+  default     = 2048
+}
+
+# CPU units to assign to the ECS task.
+variable "webserver_cpu" {
+  description = "Number of CPU units to allocate for the webserver ECS task."
+  type        = number
+  default     = 1024
+}
+
+# Amount of memory to assign to the ECS task, measured in MiB.
+variable "webserver_memory" {
+  description = "Amount of memory (in MiB) to allocate for the webserver ECS task."
+  type        = number
+  default     = 2048
+}
+
+# CPU units to assign to the ECS task.
+variable "scheduler_cpu" {
+  description = "Number of CPU units to allocate for the scheduler ECS task."
+  type        = number
+  default     = 1024
+}
+
+# Amount of memory to assign to the ECS task, measured in MiB.
+variable "scheduler_memory" {
+  description = "Amount of memory (in MiB) to allocate for the scheduler ECS task."
+  type        = number
+  default     = 2048
+}
+
+# CPU units to assign to the ECS task.
+variable "triggerer_cpu" {
+  description = "Number of CPU units to allocate for the triggerer ECS task."
+  type        = number
+  default     = 1024
+}
+
+# Amount of memory to assign to the ECS task, measured in MiB.
+variable "triggerer_memory" {
+  description = "Amount of memory (in MiB) to allocate for the triggerer ECS task."
   type        = number
   default     = 2048
 }
 
 # Average CPU usage threshold to trigger ECS task auto-scaling.
-variable "autoscale_cpu_avg_usage" {
+variable "webserver_autoscale_cpu_avg_usage" {
   description = "CPU usage percentage that triggers ECS task autoscaling."
   type        = number
   default     = 70
 }
 
-# Minimum number of ECS tasks to maintain when scaling in.
-variable "min_capacity" {
+# Average CPU usage threshold to trigger ECS task auto-scaling.
+variable "scheduler_autoscale_cpu_avg_usage" {
+  description = "CPU usage percentage that triggers ECS task autoscaling."
+  type        = number
+  default     = 70
+}
+
+# Average CPU usage threshold to trigger ECS task auto-scaling.
+variable "triggerer_autoscale_cpu_avg_usage" {
+  description = "CPU usage percentage that triggers ECS task autoscaling."
+  type        = number
+  default     = 70
+}
+
+# Minimum number of webserver ECS tasks to maintain when scaling in.
+variable "webserver_autoscale_min_capacity" {
   description = "Minimum number of ECS tasks to keep running when scaling in."
   type        = number
   default     = 1
 }
 
-# Maximum number of ECS tasks to run when scaling out.
-variable "max_capacity" {
+# Maximum number of webserver ECS tasks to run when scaling out.
+variable "webserver_autoscale_max_capacity" {
   description = "Maximum number of ECS tasks to run when scaling out."
   type        = number
   default     = 5
+}
+
+# Minimum number of scheduler ECS tasks to maintain when scaling in.
+variable "scheduler_autoscale_min_capacity" {
+  description = "Minimum number of ECS tasks to keep running when scaling in."
+  type        = number
+  default     = 1
+}
+
+# Maximum number of scheduler ECS tasks to run when scaling out.
+variable "scheduler_autoscale_max_capacity" {
+  description = "Maximum number of ECS tasks to run when scaling out."
+  type        = number
+  default     = 5
+}
+
+# Minimum number of triggerer ECS tasks to maintain when scaling in.
+variable "triggerer_autoscale_min_capacity" {
+  description = "Minimum number of ECS tasks to keep running when scaling in."
+  type        = number
+  default     = 1
+}
+
+# Maximum number of triggerer ECS tasks to run when scaling out.
+variable "triggerer_autoscale_max_capacity" {
+  description = "Maximum number of ECS tasks to run when scaling out."
+  type        = number
+  default     = 5
+}
+
+# The amount of Airflow webservers
+variable "webserver_count" {
+  description = "The number of webservers you want to configure"
+  type        = number
+  default     = 1
+}
+
+# The amount of Airflow schedulers
+variable "scheduler_count" {
+  description = "The number of schedulers you want to configure"
+  type        = number
+  default     = 1
+}
+
+# The amount of Airflow triggerer
+variable "triggerer_count" {
+  description = "The number of triggerers you want to configure"
+  type        = number
+  default     = 1
 }
 
 # RDS variables
@@ -207,7 +291,7 @@ variable "rds_engine" {
 variable "rds_engine_version" {
   description = "Version of the database engine for the RDS instance."
   type        = string
-  default     = "15.4"
+  default     = "15.5"
 }
 
 # The compute and memory capacity class for the RDS instance.
