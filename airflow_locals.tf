@@ -99,7 +99,7 @@ locals {
     },
     {
       name  = "AIRFLOW__ECS_FARGATE__SUBNETS"
-      value = join(",", local.subnet_ids)
+      value = join(",", local.private_subnet_ids)
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
