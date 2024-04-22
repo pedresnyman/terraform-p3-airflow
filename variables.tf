@@ -39,8 +39,14 @@ variable "vpc_id" {
   type        = string
 }
 
-# Specifies the subnet id's Airflow would be deployed.
-variable "subnet_ids" {
+# Specifies the public subnet id's Airflow would be deployed.
+variable "public_subnet_ids" {
+  description = "Subnet IDs to deploy Airflow."
+  type        = list(string)
+}
+
+# Specifies the private subnet id's Airflow would be deployed.
+variable "private_subnet_ids" {
   description = "Subnet IDs to deploy Airflow."
   type        = list(string)
 }

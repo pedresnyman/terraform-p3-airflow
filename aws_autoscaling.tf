@@ -1,6 +1,6 @@
 ## autoscaling
 resource "aws_appautoscaling_target" "airflow_fargate_target" {
-  for_each           = local.airflow_components
+  for_each           = { for k, v in local.airflow_components : k => v if k != "task-executor" }
   max_capacity       = each.value.autoscale_max_capacity
   min_capacity       = each.value.autoscale_min_capacity
   resource_id        = "service/${aws_ecs_cluster.airflow.name}/${aws_ecs_service.airflow_fargate[each.key].name}"
@@ -9,7 +9,7 @@ resource "aws_appautoscaling_target" "airflow_fargate_target" {
 }
 
 resource "aws_appautoscaling_policy" "airflow_fargate_policy" {
-  for_each           = local.airflow_components
+  for_each           = { for k, v in local.airflow_components : k => v if k != "task-executor" }
   name               = "cpu-utilization-${each.key}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = aws_appautoscaling_target.airflow_fargate_target[each.key].resource_id

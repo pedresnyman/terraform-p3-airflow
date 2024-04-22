@@ -2,8 +2,8 @@
 resource "aws_ecs_task_definition" "airflow_fargate" {
   for_each           = local.airflow_components
   family             = "airflow-${each.key}"
-  cpu                = var.cpu
-  memory             = var.memory
+  cpu                = each.value.cpu
+  memory             = each.value.memory
   execution_role_arn = "arn:aws:iam::${data.aws_caller_identity.this_account.account_id}:role/${local.ecs_role_name}"
   task_role_arn      = "arn:aws:iam::${data.aws_caller_identity.this_account.account_id}:role/${local.ecs_role_name}"
   network_mode       = "awsvpc"

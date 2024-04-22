@@ -1,7 +1,7 @@
 # create ecs services
 # webserver, scheduler, triggerer
 resource "aws_ecs_service" "airflow_fargate" {
-  for_each        = { for key, value in local.airflow_components : key => value if lookup(value, "desired_count", null) != null }
+  for_each           = { for k, v in local.airflow_components : k => v if k != "task-executor" }
   name            = "airflow-${each.key}"
   task_definition = aws_ecs_task_definition.airflow_fargate[each.key].family
   cluster         = aws_ecs_cluster.airflow.arn
@@ -16,7 +16,7 @@ resource "aws_ecs_service" "airflow_fargate" {
   }
   enable_execute_command = var.enable_execute_command
   network_configuration {
-    subnets          = local.subnet_ids
+    subnets          = local.private_subnet_ids
     assign_public_ip = false
     security_groups  = [aws_security_group.airflow_fargate_service[each.key].id]
   }

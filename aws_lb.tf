@@ -6,7 +6,7 @@ resource "aws_lb" "airflow_fargate" {
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.airflow_fargate_alb[each.key].id]
-  subnets            = local.subnet_ids
+  subnets            = local.public_subnet_ids
   ip_address_type    = "ipv4"
 }
 
