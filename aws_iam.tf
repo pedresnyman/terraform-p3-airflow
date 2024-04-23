@@ -48,6 +48,16 @@ resource "aws_iam_policy" "ecs_task_execution_policy" {
             "ssmmessages:OpenDataChannel"
         ],
         "Resource": "*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "s3:*"
+        ],
+        "Resource": [
+            "arn:aws:s3:::${var.s3_bucket_name}",
+            "arn:aws:s3:::${var.s3_bucket_name}/*"
+        ]
     }
   ]
 }
