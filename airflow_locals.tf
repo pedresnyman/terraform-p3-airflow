@@ -3,7 +3,7 @@ locals {
   vpc_id             = var.vpc_id
   public_subnet_ids  = var.public_subnet_ids
   private_subnet_ids = var.private_subnet_ids
-  # aws role
+  # aws roles
   execution_role_arn = var.execution_role_arn
   task_role_arn      = var.task_role_arn
   # ecs tasks/services
