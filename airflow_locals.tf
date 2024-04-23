@@ -1,7 +1,7 @@
 locals {
   # network
-  vpc_id     = var.vpc_id
-  public_subnet_ids = var.public_subnet_ids
+  vpc_id             = var.vpc_id
+  public_subnet_ids  = var.public_subnet_ids
   private_subnet_ids = var.private_subnet_ids
   # aws role
   ecs_role_name = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name

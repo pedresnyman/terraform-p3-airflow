@@ -3,7 +3,7 @@
 resource "aws_lb" "airflow_fargate" {
   for_each           = { for key, value in local.airflow_components : key => value if key == "webserver" }
   name               = "airflow-${each.key}"
-  internal           = true
+  internal           = var.load_balancer_internal_facing
   load_balancer_type = "application"
   security_groups    = [aws_security_group.airflow_fargate_alb[each.key].id]
   subnets            = local.public_subnet_ids

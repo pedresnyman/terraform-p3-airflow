@@ -334,3 +334,8 @@ variable "secrets_manager_recovery_window_in_days" {
   type        = number
   default     = 0 # force delete
 }
+
+variable "load_balancer_internal_facing" {
+  type    = bool
+  default = false
+}
