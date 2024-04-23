@@ -339,3 +339,7 @@ variable "load_balancer_internal_facing" {
   type    = bool
   default = false
 }
+
+variable "s3_bucket_name" {
+  type = string
+}
