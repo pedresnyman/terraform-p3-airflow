@@ -4,7 +4,8 @@ locals {
   public_subnet_ids  = var.public_subnet_ids
   private_subnet_ids = var.private_subnet_ids
   # aws role
-  ecs_role_name = var.airflow_ecs_role != null ? var.airflow_ecs_role : aws_iam_role.role_ecs_task_execution[0].name
+  execution_role_arn = var.execution_role_arn
+  task_role_arn      = var.task_role_arn
   # ecs tasks/services
   airflow_components = {
     webserver = {

@@ -110,11 +110,14 @@ variable "capacity_providers" {
   default     = ["FARGATE_SPOT", "FARGATE"]
 }
 
-# IAM role assumed by ECS to execute tasks for Airflow.
-variable "airflow_ecs_role" {
-  description = "IAM role assumed by ECS when executing Airflow tasks."
+variable "execution_role_arn" {
+  description = "ARN of the IAM role that ECS tasks assume for operations like pulling container images from ECR and publishing logs to CloudWatch. This role is used by the ECS agent during the setup and teardown of containers."
   type        = string
-  default     = null
+}
+
+variable "task_role_arn" {
+  description = "ARN of the IAM role that the Airflow application running within the ECS task assumes to interact with AWS services directly, such as accessing S3 buckets or interfacing with RDS databases. This role provides AWS service permissions directly to the applications running on the ECS tasks."
+  type        = string
 }
 
 # CPU units to assign to the ECS task.
@@ -338,8 +341,4 @@ variable "secrets_manager_recovery_window_in_days" {
 variable "load_balancer_internal_facing" {
   type    = bool
   default = false
-}
-
-variable "s3_bucket_name" {
-  type = string
 }
