@@ -10,6 +10,7 @@ variable "airflow_username_password" {
   description = "The Airflow username password"
   type        = string
   default     = null
+  sensitive   = true
 }
 
 # Specifies the AWS region where resources will be created.
