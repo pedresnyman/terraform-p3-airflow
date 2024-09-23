@@ -92,7 +92,7 @@ locals {
   airflow_environment_static_variables = [
     {
       name  = "AIRFLOW__CORE__EXECUTOR"
-      value = "airflow.providers.amazon.aws.executors.ecs.ecs_executor.AwsEcsExecutor,LocalExecutor"
+      value = "LocalExecutor,airflow.providers.amazon.aws.executors.ecs.ecs_executor.AwsEcsExecutor"
     },
     {
       name  = "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"
